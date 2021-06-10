@@ -1,0 +1,17 @@
+{
+  "quiz": "kavia123",
+  "hello" : "hai",
+  "JSON" : {
+    "1" : {
+      "2" : {
+        "string2" : "KAVIA"
+      },
+      "3" : {
+        "strign" : "str"
+      }
+    },
+    "JSON2" : {
+      "name" : "Kavia"
+    }
+  }
+}
