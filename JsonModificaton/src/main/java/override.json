@@ -1,17 +1,62 @@
 {
-  "quiz": "kavia123",
-  "hello" : "hai",
-  "JSON" : {
-    "1" : {
-      "2" : {
-        "string2" : "KAVIA"
-      },
-      "3" : {
-        "strign" : "str"
+  "api_definition": {
+    "version_data": {
+      "versions": {
+        "Default": {
+          "extended_paths": {
+            "ignored": [
+              {
+                "path": "/test-path/",
+                "method_actions": {
+                  "GET": {
+                    "action": "no_action",
+                    "code": 401,
+                    "data": "",
+                    "headers": {}
+                  }
+                }
+              },
+              {
+                "path": "/test-path/reply1234567890",
+                "method_actions": {
+                  "GET": {
+                    "action": "replyeee",
+                    "code": 200,
+                    "data": "{\"foo\":\"bar\"}",
+                    "headers": {
+                      "x-test": "test"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
       }
     },
-    "JSON2" : {
-      "name" : "Kavia"
+    "oauth_meta": {
+      "allowed_authorize_types": [
+        "token1"
+      ]
     }
-  }
+  },
+  "hook_references": [
+    {
+      "event_name": "QuotaExceeded1234",
+      "hook": {
+        "api_model": {},
+        "id": "54be6c0beba6db07a60000022232",
+        "org_id": "54b53d3aeba6db5c35000003233",
+        "name": "Test Post",
+        "method": "POST",
+        "target_path": "http://httpbin.org/post2222",
+        "template_path": "32eqwe",
+        "header_map": {
+          "x-tyk-test": "1234533336"
+        },
+        "event_timeout": 0
+      },
+      "event_timeout": 60
+    }
+  ]
 }

@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.util.stream.StreamSupport;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,44 +13,124 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties
 public class Modify {
-/*
-    static void parsing(JSONObject root)
-    {
-        String key;
-        Iterator<String> iterator = root.keys();
 
+}
+ /*   public static void JSONPut(JSONObject json, String key, Object val_newer)
+    {
+        json.put(key,val_newer);
+        //System.out.println("PUTCALLED");
+    }
+
+    public static void JSONArrayPut(JSONObject json, JSONArray val_older, JSONArray val_new)
+    {
+
+    }
+
+    static void parsing(JSONObject root, JSONObject jo, ArrayList<String> path) throws IOException {
+        String key;
+        Iterator<String> iterator = jo.keys();
+        //System.out.println(path);
+        FileInputStream inFile = new FileInputStream("src/main/java/ArrayStructure.json");
+        byte[] str = new byte[inFile.available()];
+        inFile.read(str);
+        String text = new String(str);
+        JSONObject arrayStructure = new JSONObject(text);
+        JSONArray array=arrayStructure.getJSONArray("Array");
         while (iterator.hasNext()) {
             key =iterator.next();
-
-           // System.out.println(key);
-
-          //  Object val_newer = jo.get(key);
+            Object val_newer = jo.get(key);
             if(root.isNull(key)) {
-               // JSONPut (root,key,val_newer);
+                //JSONPut (root,key,val_newer);
+                System.out.println("ERROR");
                 continue;
             }
 
             Object val_older = root.get(key);
-            if((val_older instanceof JSONObject))
+            if((val_older instanceof JSONObject) && (val_newer instanceof JSONObject))
             {
-                parsing((JSONObject) val_older);
+                path.add(key);
+                //System.out.println(key);
+                parsing((JSONObject) val_older,(JSONObject) val_newer,path);
             }
             else
             {
-                if(val_older instanceof Integer)
-                    System.out.println("key: "+key+"\tType: Integer");
-                else if(val_older instanceof Long)
-                    System.out.println("key: "+key+"\tType: Long");
-                else if(val_older instanceof Boolean)
-                    System.out.println("key: "+key+"\tType: Boolean");
-                else if(val_older instanceof String)
-                    System.out.println("key: "+key+"\tType: String");
-                else if(val_older instanceof JSONObject)
-                    System.out.println("key: "+key+"\tType: JSONObject");
-                else if(val_older instanceof JSONArray)
-                    System.out.println("key: "+key+"\tType: JSONArray");
+                path.add(key);
+                if((val_older instanceof Integer) && (val_newer instanceof Integer))
+                    JSONPut(root,key,val_newer);
+                else if((val_older instanceof Long) && (val_newer instanceof Long))
+                    JSONPut(root,key,val_newer);
+                else if((val_older instanceof Boolean) && (val_newer instanceof Boolean))
+                    JSONPut(root,key,val_newer);
+                else if((val_older instanceof String) && (val_newer instanceof String))
+                    JSONPut(root,key,val_newer);
+
+                else if((val_older instanceof JSONArray) && (val_newer instanceof JSONArray)) {
+                    //System.out.println("ARR");
+                    String imp_field = "";
+                    for(int i=0;i<array.length();i++){
+                        JSONObject structure = array.getJSONObject(i);
+                        if(key.equals(structure.getString("key"))) {
+                            JSONArray arrayPath = structure.getJSONArray("path");
+                            ArrayList<Object> arrayPath2 = ArrayUtil.convert(arrayPath);
+                            if(arrayPath2.equals(path)) {
+                                if(structure.getString("value_type").equals("JSONObject"))
+                                    imp_field = structure.getString("importatnt_field");
+                                System.out.println(structure);
+                                break;
+                            }
+                        }
+                    }
+                    if(!imp_field.isEmpty())
+                    {
+                        ArrayList<Object> arr_older =ArrayUtil.convert((JSONArray) val_older);
+                        ArrayList<Object> arr_newer =ArrayUtil.convert((JSONArray) val_newer);
+                        for(int i=0;i< arr_newer.size();i++)
+                        {
+                            int flag=0;
+                            JSONObject newer = ((JSONArray) val_newer).getJSONObject(i);
+                            for(int j=0;j<arr_older.size();j++)
+                            {
+                                JSONObject old = ((JSONArray) val_older).getJSONObject(j);
+
+                                if((old.get(imp_field)).equals(newer.get(imp_field)))
+                                {
+                                    flag=1;
+                                    parsing(old,newer,path);
+                                }
+
+                            }
+                            if(flag==0)
+                            {
+
+                               // JSONArray valn=(JSONArray)val_newer;
+                                //int size=((JSONArray) val_newer).length();
+                                //System.out.println("*********"+ ((JSONArray) val_newer).getJSONObject(i).get(imp_field));
+                                ((JSONArray) val_older).put(newer);
+                                //ArrayList<Object> new_arr = ArrayUtil.convert(val_newer)
+                            }
+                        }
+
+                    }
+                    System.out.println("---------------------------------------------\n" +
+                            val_older+"\n--------------------------------\n");
+                //System.out.println("Path " + path + "\t" + "key: " + key + "\tType: JSONArray" + "\n");
+
+            }
+                else
+                {
+                    System.out.println("mismatch key " + key);
+                    if(val_newer instanceof JSONArray)
+                        System.out.println("newer");
+                    if(val_older instanceof JSONArray)
+                        System.out.println("older");
+
+                }
              //   JSONPut(root , key,val_newer);
             }
+            System.out.println("Path " + path + "\t" + "key: " + key + "\tType: JSONArray" + "\n");
+
+            int n=path.size();
+            path.remove(n-1);
         }
     }
 
@@ -61,13 +142,21 @@ public class Modify {
             inFile.read(str);
             String text = new String(str);
             JSONObject root = new JSONObject(text);
-            parsing(root);
+
+            inFile = new FileInputStream("src/main/java/ove  rride.json");
+            str = new byte[inFile.available()];
+            inFile.read(str);
+            text = new String(str);
+            JSONObject jo = new JSONObject(text);
+
+            ArrayList<String> path = new ArrayList<>();
+            parsing(root,jo,path);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 }
 
 /*    private static JSONObject createJSONObject(String jsonString){

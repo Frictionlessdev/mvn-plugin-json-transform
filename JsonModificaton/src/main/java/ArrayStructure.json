@@ -1,0 +1,61 @@
+{
+  "Array" : [
+    {
+      "path" : ["api_definition", "allowed_ips"],
+      "key" : "allowed_ips",
+      "value_type" : "String"
+    },
+    {
+      "path" : ["api_definition", "oauth_meta", "allowed_authorize_types"],
+      "key" : "allowed_authorize_types",
+      "value_type" : "String"
+    },
+    {
+      "path" : ["api_definition", "oauth_meta", "allowed_access_types"],
+      "key" : "allowed_access_types",
+      "value_type" : "String"
+    },
+    {
+      "path" : ["api_definition", "version_data", "versions", "Default", "extended_paths", "ignored"],
+      "key" : "ignored",
+      "value_type" : "JSONObject",
+      "importatnt_field" : "path"
+    },
+    {
+      "path" : ["api_definition", "version_data", "versions", "Default", "extended_paths", "white_list"],
+      "key" : "white_list",
+      "value_type" : "JSONObject",
+      "importatnt_field" : "path"
+    },
+    {
+      "path" : ["api_definition", "version_data", "versions", "Default", "extended_paths", "black_list"],
+      "key" : "black_list",
+      "value_type" : "JSONObject",
+      "importatnt_field" : "path"
+    },
+    {
+      "path" : ["api_definition", "version_data", "versions", "Default", "paths", "ignored"],
+      "key" : "ignored",
+      "value_type" : "JSONObject",
+      "importatnt_field" : "path"
+    },
+    {
+      "path" : ["api_definition", "version_data", "versions", "Default", "paths", "white_list"],
+      "key" : "white_list",
+      "value_type" : "JSONObject",
+      "importatnt_field" : "path"
+    },
+    {
+      "path" : ["api_definition", "version_data", "versions", "Default", "paths", "black_list"],
+      "key" : "black_list",
+      "value_type" : "JSONObject",
+      "importatnt_field" : "path"
+    },
+    {
+      "path" : ["hook_references"],
+      "key" : "hook_references",
+      "value_type" : "JSONObject",
+      "importatnt_field" : "event_name"
+    }
+  ]
+}
